@@ -34,7 +34,7 @@ def login():
     if request.method == "POST" and form.validate_on_submit():
         # change this to actually validate the entire form submission
         # and not just one field
-        return redirect(url_for('secure_page'))
+        return redirect(url_for('secure'))
     if form.username.data:
             # Get the username and password values from the form.
             username=form.username.data
@@ -60,6 +60,21 @@ def login():
     return render_template("login.html", form=form)
 
 
+
+@app.route('/secure-page')
+@login_required
+def secure():
+    return render_template('secure_page.html')
+    
+
+@app.route('logout')
+@login_required
+def logout():
+    logout_user()
+    flash(' You have logged out', 'success')
+    return redirect(url_for("home"))
+    
+    
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
 @login_manager.user_loader
